@@ -105,6 +105,10 @@ class CustomResponseHeaderHandler(tornado.web.RequestHandler):
         self.set_status(200)
 
 
+class Raise403Handler(tornado.web.RequestHandler):
+    def get(self):
+        raise tornado.web.HTTPError(403)
+
 def make_app(tracer):
     app = tornado.web.Application(
         [
@@ -116,6 +120,7 @@ def make_app(tracer):
             (r"/healthz", HealthCheckHandler),
             (r"/ping", HealthCheckHandler),
             (r"/test_custom_response_headers", CustomResponseHeaderHandler),
+            (r"/raise_403", Raise403Handler),
         ]
     )
     app.tracer = tracer
